@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV imprimible | Digitación, control y soporte operativo</title>
+  <style>
+    :root {
+      --page-width: 210mm;
+      --page-min-height: 297mm;
+      --sidebar-width: 70mm;
+      --sidebar-bg: #d9d9d9;
+      --text: #111111;
+      --muted: #6f7480;
+      --line: #1a1a1a;
+      --paper: #ffffff;
+      --page-bg: #cfcfcf;
+    }
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    html, body { margin: 0; padding: 0; background: var(--page-bg); color: var(--text); font-family: Arial, Helvetica, sans-serif; }
+    body { padding: 20px; }
+    .toolbar { width: var(--page-width); margin: 0 auto 12px auto; display: flex; gap: 10px; align-items: center; justify-content: space-between; background: #ffffff; border-radius: 12px; padding: 12px 14px; box-shadow: 0 8px 22px rgba(0,0,0,.08); }
+    .toolbar__text { font-size: 13px; line-height: 1.4; color: #2f3640; }
+    .toolbar__actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    button { border: 0; background: #111111; color: #ffffff; padding: 10px 14px; border-radius: 10px; cursor: pointer; font-size: 13px; font-weight: 700; }
+    .sheet { width: var(--page-width); min-height: var(--page-min-height); margin: 0 auto; background: var(--paper); display: grid; grid-template-columns: var(--sidebar-width) 1fr; box-shadow: 0 10px 26px rgba(0,0,0,.13); overflow: hidden; }
+    .sidebar { background: var(--sidebar-bg); padding: 20mm 12px 16mm 14px; }
+    .main { background: var(--paper); padding: 14mm 16mm 16mm 16mm; }
+    .photo-wrap { width: 150px; height: 150px; border-radius: 50%; overflow: hidden; background: #9a9a9a; margin: 0 auto 14px auto; display: flex; align-items: center; justify-content: center; color: #ffffff; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; }
+    .photo-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .name { font-size: 28px; line-height: 1.18; font-weight: 800; margin: 0 0 18px 0; letter-spacing: -.02em; }
+    .contact-list { display: grid; gap: 10px; margin-bottom: 18px; }
+    .contact-item { display: grid; grid-template-columns: 16px 1fr; gap: 8px; align-items: start; font-size: 13px; line-height: 1.35; word-break: break-word; }
+    .contact-item a { color: inherit; text-decoration: none; }
+    .contact-item a:hover { text-decoration: underline; }
+    .icon { width: 16px; height: 16px; display: inline-flex; align-items: center; justify-content: center; margin-top: 1px; }
+    .side-section { margin-top: 16px; }
+    .side-title { font-size: 14px; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; margin: 0 0 8px 0; }
+    .side-line { height: 2px; width: 100%; background: var(--line); margin-bottom: 8px; }
+    .side-block, .side-list { font-size: 12px; line-height: 1.5; }
+    .side-block { margin-bottom: 10px; }
+    .side-list { display: grid; gap: 3px; padding: 0; margin: 0; list-style: none; }
+    .main-section { margin-bottom: 16px; }
+    .main-title { font-size: 22px; line-height: 1.2; font-weight: 800; margin: 0 0 10px 0; letter-spacing: -.02em; }
+    .summary { font-size: 13px; line-height: 1.6; margin: 0; text-align: left; }
+    .entry { margin-bottom: 14px; break-inside: avoid; page-break-inside: avoid; }
+    .entry-role { font-size: 16px; line-height: 1.35; font-weight: 800; margin: 0 0 4px 0; }
+    .entry-meta { font-size: 12px; line-height: 1.35; font-style: italic; color: var(--muted); margin-bottom: 8px; }
+    .entry-meta .divider { padding: 0 8px; font-style: normal; }
+    .entry-list { margin: 0; padding-left: 22px; display: grid; gap: 7px; font-size: 12.7px; line-height: 1.5; }
+    .small-note { width: var(--page-width); margin: 10px auto 0 auto; font-size: 12px; color: #404040; line-height: 1.45; }
+    @page { size: A4; margin: 12mm 0 0 0; }
+    @page :first { margin-top: 0; }
+    @media print {
+      html, body { background: #ffffff; }
+      body { padding: 0; }
+      .toolbar, .small-note { display: none !important; }
+      .sheet { width: 210mm; min-height: 297mm; margin: 0; box-shadow: none; display: grid !important; grid-template-columns: var(--sidebar-width) 1fr !important; }
+      .sidebar { padding: 20mm 12px 16mm 14px !important; }
+      .main { padding: 14mm 16mm 16mm 16mm !important; }
+    }
+    @media screen and (max-width: 900px) {
+      body { padding: 10px; }
+      .toolbar, .sheet, .small-note { width: 100%; }
+      .sheet { grid-template-columns: 1fr; }
+      .sidebar, .main { padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="toolbar__text">Archivo listo para visualizar, editar e imprimir como PDF.</div>
+    <div class="toolbar__actions">
+      <button type="button" onclick="window.print()">Imprimir / guardar como PDF</button>
+    </div>
+  </div>
+
+  <article class="sheet">
+    <aside class="sidebar">
+      <div class="photo-wrap" id="photo-box">foto</div>
+      <h1 class="name" id="name"></h1>
+      <div class="contact-list" id="contacts"></div>
+
+      <section class="side-section">
+        <h2 class="side-title">Educación</h2>
+        <div class="side-line"></div>
+        <div id="education"></div>
+      </section>
+
+      <section class="side-section">
+        <h2 class="side-title">Habilidades</h2>
+        <div class="side-line"></div>
+        <div id="skills"></div>
+      </section>
+
+      <section class="side-section">
+        <h2 class="side-title">Idiomas</h2>
+        <div class="side-line"></div>
+        <ul class="side-list" id="languages"></ul>
+      </section>
+    </aside>
+
+    <main class="main">
+      <section class="main-section">
+        <h2 class="main-title">Resumen profesional</h2>
+        <p class="summary" id="summary"></p>
+      </section>
+
+      <section class="main-section" id="dynamic-sections"></section>
+    </main>
+  </article>
+
+  <div class="small-note"><strong>Nota:</strong> para que el panel gris se imprima correctamente, activa “gráficos de fondo” en la ventana de impresión.</div>
+
+  <script>
+    const cvData = {
+      profile: {
+        name: "Eva Luna Calle Briceño",
+        photo: "./foto-cv.png?v=2",
+        contacts: [
+          { type: "email", text: "e.luna.cb07@gmail.com", href: "mailto:e.luna.cb07@gmail.com" },
+          { type: "phone", text: "(+51) 936 306 206" },
+          { type: "location", text: "Piura, Perú" },
+          { type: "link", text: "LinkedIn", href: "https://www.linkedin.com/in/evaluna-calle-brice%C3%B1o-108719305" },
+          { type: "link", text: "GitHub", href: "https://github.com/Luna07-zh" }
+        ]
+      },
+      sidebar: {
+        education: [
+          {
+            title: "Universidad Nacional de Piura (UNP)",
+            subtitle: "Bachiller en Economía (en curso, 9.º ciclo)",
+            lines: ["Piura, Perú", "Décimo superior de la carrera", "Beca de rendimiento académico", "Cursos relevantes: Econometría, Economía financiera, Estadística, Análisis de datos y Finanzas corporativas"]
+          }
+        ],
+        skills: [
+          { label: "Herramientas", text: "Microsoft Excel (filtros, tablas, fórmulas básicas, hojas de seguimiento y organización de bases de datos), Google Sheets, Microsoft Word, PowerPoint, Google Drive, Python, Stata, EViews y Power BI." },
+          { label: "Competencias", text: "Atención al cliente, seguimiento de contactos, comunicación comercial, gestión de bases de datos, organización de información, soporte administrativo y manejo de canales digitales." }
+        ],
+        languages: ["Español (nativo)", "Inglés (avanzado)", "Japonés (básico)"]
+      },
+      summary: "Estudiante de Economía de la Universidad Nacional de Piura, perteneciente al décimo superior y actualmente en 9.º ciclo, con experiencia en ventas, atención al cliente, seguimiento comercial y gestión de información. Manejo Excel, Google Sheets, Word y herramientas digitales para seguimiento, registro y verificación de información. He apoyado procesos que exigieron orden, precisión, confidencialidad y coordinación con distintas áreas. Me caracterizo por mi capacidad analítica, mi atención al detalle y mi facilidad para sostener tareas que requieren consistencia y control.",
+      sections: [
+        {
+          title: "Experiencia",
+          type: "entries",
+          items: [
+            {
+              role: "Soporte de operaciones administrativas y control documentario — Empresa confidencial",
+              date: "Participación temporal",
+              location: "Remoto",
+              bullets: [
+                "Recibí, revisé y registré documentación e información de soporte, manteniendo orden y consistencia en los archivos digitales.",
+                "Actualicé tablas de seguimiento con montos, fechas, estados y observaciones, apoyando el control diario de procesos y vencimientos.",
+                "Organicé archivos y sustentos digitales, mejorando la trazabilidad y accesibilidad de la información.",
+                "Realicé conciliaciones simples entre registros y documentos de respaldo para identificar diferencias antes de su procesamiento.",
+                "Manejé información confidencial con discreción y precisión."
+              ]
+            },
+            {
+              role: "Practicante preprofesional — UGEL Chulucanas, oficina de UPDI",
+              date: "2026",
+              location: "Chulucanas, Piura",
+              bullets: [
+                "Gestioné documentación y bases de datos vinculadas a instituciones educativas, apoyando procesos de planificación y organización institucional.",
+                "Sistematicé información relevante para el inicio del año escolar 2026, asegurando orden, consistencia y actualización de registros.",
+                "Participé en la elaboración y seguimiento de documentos de planificación del área, fortaleciendo habilidades de análisis, coordinación y soporte técnico-administrativo."
+              ]
+            },
+            {
+              role: "Coordinación de proyectos académicos — Círculo de Capital Social y Liderazgo Académico, Facultad de Economía, UNP",
+              date: "2025 – presente",
+              location: "Piura",
+              bullets: [
+                "Preparé y organicé materiales, registros y documentos de planificación para asegurar continuidad y seguimiento de actividades.",
+                "Coordiné información entre docentes, egresados y estudiantes, cuidando el orden y la trazabilidad de tareas y acuerdos."
+              ]
+            },
+            {
+              role: "Analista junior de portafolios — Proyecto propio",
+              date: "2025",
+              location: "Remoto",
+              bullets: [
+                "Construí y comparé bases de análisis para carteras multi-activos utilizando Python y Excel, fortaleciendo mi manejo de datos, criterios de revisión y consistencia en registros.",
+                "Desarrollé estructuras de seguimiento aplicables a procesos de control y análisis basados en información cuantitativa."
+              ]
+            }
+          ]
+        },
+        {
+          title: "Certificaciones y formación complementaria",
+          type: "entries",
+          items: [
+            { role: "Curso de Python (nivel básico e intermedio) — Cámara de Comercio Exterior", date: "2026" },
+            { role: "Curso de Python — Platzi", date: "2023", bullets: ["Incluye fundamentos de Python, funciones, comprehensions y manejo de errores."] }
+          ]
+        },
+        {
+          title: "Información adicional",
+          type: "entries",
+          items: [
+            { role: "Perfil preparado para", bullets: ["Asesoría de ventas, promotoría, atención al cliente, seguimiento comercial y roles orientados al servicio y conversión."] }
+          ]
+        }
+      ]
+    };
+
+    const icons = {
+      email: '<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm0 2v.2l9 6 9-6V7l-9 6-9-6Z"/></svg>',
+      phone: '<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M6.6 10.8a15.9 15.9 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24c1.1.36 2.28.56 3.5.56a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.82 21 3 13.18 3 3.5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.22.2 2.4.56 3.5a1 1 0 0 1-.24 1l-2.22 2.8Z"/></svg>',
+      location: '<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Zm0 9.5A2.5 2.5 0 1 0 12 6a2.5 2.5 0 0 0 0 5.5Z"/></svg>',
+      link: '<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M10.59 13.41a1.996 1.996 0 0 0 2.82 0l3.59-3.59a2 2 0 0 0-2.83-2.82l-1.29 1.29a1 1 0 1 1-1.41-1.41l1.29-1.29a4 4 0 1 1 5.66 5.66l-3.59 3.59a4 4 0 0 1-5.66 0a1 1 0 0 1 1.42-1.42ZM6.99 12.17a4 4 0 0 1 5.66 0a1 1 0 1 1-1.41 1.42a2 2 0 0 0-2.83 0l-3.58 3.58a2 2 0 0 0 2.82 2.83l1.29-1.29a1 1 0 0 1 1.41 1.41l-1.29 1.29a4 4 0 0 1-5.66-5.66l3.59-3.58Z"/></svg>',
+      default: '<svg viewBox="0 0 24 24" width="14" height="14"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>'
+    };
+
+    function el(tag, className, html) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (html !== undefined) node.innerHTML = html;
+      return node;
+    }
+    function renderPhoto() {
+      const box = document.getElementById('photo-box');
+      if (cvData.profile.photo && cvData.profile.photo.trim() !== '') {
+        const img = document.createElement('img');
+        img.src = cvData.profile.photo;
+        img.alt = `Foto de ${cvData.profile.name}`;
+        box.innerHTML = '';
+        box.appendChild(img);
+      }
+    }
+    function renderContacts() {
+      const wrap = document.getElementById('contacts');
+      cvData.profile.contacts.forEach(contact => {
+        const item = el('div', 'contact-item');
+        const icon = el('span', 'icon', icons[contact.type] || icons.default);
+        const text = document.createElement(contact.href ? 'a' : 'span');
+        text.textContent = contact.text;
+        if (contact.href) { text.href = contact.href; text.target = '_blank'; text.rel = 'noreferrer'; }
+        item.appendChild(icon); item.appendChild(text); wrap.appendChild(item);
+      });
+    }
+    function renderEducation() {
+      const wrap = document.getElementById('education');
+      cvData.sidebar.education.forEach(item => {
+        const block = el('div', 'side-block');
+        block.appendChild(el('div', '', `<strong>${item.title}</strong>`));
+        if (item.subtitle) block.appendChild(el('div', '', `<em>${item.subtitle}</em>`));
+        (item.lines || []).forEach(line => block.appendChild(el('div', '', line)));
+        wrap.appendChild(block);
+      });
+    }
+    function renderSkills() {
+      const wrap = document.getElementById('skills');
+      cvData.sidebar.skills.forEach(item => {
+        const block = el('div', 'side-block');
+        block.innerHTML = `<strong>${item.label}:</strong> ${item.text}`;
+        wrap.appendChild(block);
+      });
+    }
+    function renderLanguages() {
+      const wrap = document.getElementById('languages');
+      cvData.sidebar.languages.forEach(language => wrap.appendChild(el('li', '', language)));
+    }
+    function renderSummary() { document.getElementById('summary').textContent = cvData.summary; }
+    function renderEntries(section) {
+      const sectionNode = el('section', 'main-section');
+      sectionNode.appendChild(el('h2', 'main-title', section.title));
+      section.items.forEach(item => {
+        const entry = el('article', 'entry');
+        entry.appendChild(el('h3', 'entry-role', item.role));
+        if (item.date || item.location) {
+          let meta = '';
+          if (item.date) meta += item.date;
+          if (item.location) meta += `${item.date ? '<span class="divider">|</span>' : ''}${item.location}`;
+          entry.appendChild(el('div', 'entry-meta', meta));
+        }
+        if (item.bullets && item.bullets.length) {
+          const ul = el('ul', 'entry-list');
+          item.bullets.forEach(bullet => ul.appendChild(el('li', '', bullet)));
+          entry.appendChild(ul);
+        }
+        sectionNode.appendChild(entry);
+      });
+      return sectionNode;
+    }
+    function renderSections() {
+      const wrap = document.getElementById('dynamic-sections');
+      cvData.sections.forEach(section => { if (section.type === 'entries') wrap.appendChild(renderEntries(section)); });
+    }
+    function renderAll() {
+      document.getElementById('name').textContent = cvData.profile.name;
+      renderPhoto(); renderContacts(); renderEducation(); renderSkills(); renderLanguages(); renderSummary(); renderSections();
+    }
+    renderAll();
+  </script>
+</body>
+</html>
