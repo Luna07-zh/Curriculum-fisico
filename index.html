@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CV imprimible | plantilla editable</title>
+  <style>
+    :root {
+      --page-width: 210mm;
+      --page-min-height: 297mm;
+      --sidebar-width: 70mm;
+      --sidebar-bg: #d9d9d9;
+      --text: #111111;
+      --muted: #6f7480;
+      --line: #1a1a1a;
+      --paper: #ffffff;
+      --page-bg: #cfcfcf;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--page-bg);
+      color: var(--text);
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      padding: 20px;
+    }
+
+    .toolbar {
+      width: var(--page-width);
+      margin: 0 auto 12px auto;
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+    }
+
+    .toolbar__text {
+      font-size: 13px;
+      line-height: 1.4;
+      color: #2f3640;
+    }
+
+    .toolbar__actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: 0;
+      background: #111111;
+      color: #ffffff;
+      padding: 10px 14px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    button.secondary {
+      background: #ececec;
+      color: #111111;
+    }
+
+    .sheet {
+      width: var(--page-width);
+      min-height: var(--page-min-height);
+      margin: 0 auto;
+      background: var(--paper);
+      display: grid;
+      grid-template-columns: var(--sidebar-width) 1fr;
+      box-shadow: 0 10px 26px rgba(0, 0, 0, 0.13);
+      overflow: hidden;
+    }
+
+    .sidebar {
+      background: var(--sidebar-bg);
+      padding: 20mm 12px 16mm 14px;
+    }
+
+    .main {
+      background: var(--paper);
+      padding: 14mm 16mm 16mm 16mm;
+    }
+
+    .photo-wrap {
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      overflow: hidden;
+      background: #9a9a9a;
+      margin: 0 auto 14px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .photo-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .name {
+      font-size: 28px;
+      line-height: 1.18;
+      font-weight: 800;
+      margin: 0 0 18px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .contact-list {
+      display: grid;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .contact-item {
+      display: grid;
+      grid-template-columns: 16px 1fr;
+      gap: 8px;
+      align-items: start;
+      font-size: 13px;
+      line-height: 1.35;
+      word-break: break-word;
+    }
+
+    .contact-item a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .contact-item a:hover {
+      text-decoration: underline;
+    }
+
+    .icon {
+      width: 16px;
+      height: 16px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+
+    .side-section {
+      margin-top: 16px;
+    }
+
+    .side-title {
+      font-size: 14px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 8px 0;
+    }
+
+    .side-line {
+      height: 2px;
+      width: 100%;
+      background: var(--line);
+      margin-bottom: 8px;
+    }
+
+    .side-block,
+    .side-list {
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .side-block {
+      margin-bottom: 10px;
+    }
+
+    .side-block strong,
+    .side-list strong {
+      font-weight: 800;
+    }
+
+    .side-list {
+      display: grid;
+      gap: 3px;
+      padding: 0;
+      margin: 0;
+      list-style: none;
+    }
+
+    .main-section {
+      margin-bottom: 16px;
+    }
+
+    .main-title {
+      font-size: 22px;
+      line-height: 1.2;
+      font-weight: 800;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.02em;
+    }
+
+    .summary {
+      font-size: 13px;
+      line-height: 1.6;
+      margin: 0;
+      text-align: left;
+    }
+
+    .entry {
+      margin-bottom: 14px;
+      break-inside: avoid;
+      page-break-inside: avoid;
+    }
+
+    .entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .entry-role {
+      font-size: 16px;
+      line-height: 1.35;
+      font-weight: 800;
+      margin: 0 0 4px 0;
+    }
+
+    .entry-meta {
+      font-size: 12px;
+      line-height: 1.35;
+      font-style: italic;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .entry-meta .divider {
+      padding: 0 8px;
+      font-style: normal;
+    }
+
+    .entry-list {
+      margin: 0;
+      padding-left: 22px;
+      display: grid;
+      gap: 7px;
+      font-size: 12.7px;
+      line-height: 1.5;
+    }
+
+    .small-note {
+      width: var(--page-width);
+      margin: 10px auto 0 auto;
+      font-size: 12px;
+      color: #404040;
+      line-height: 1.45;
+    }
+
+    @page {
+      size: A4;
+      margin: 12mm 0 0 0;
+    }
+
+    @page :first {
+      margin-top: 0;
+    }
+
+    @media print {
+      html, body {
+        background: #ffffff;
+      }
+
+      body {
+        padding: 0;
+      }
+
+      .toolbar,
+      .small-note {
+        display: none !important;
+      }
+
+      .sheet {
+        width: 210mm;
+        min-height: 297mm;
+        margin: 0;
+        box-shadow: none;
+        display: grid !important;
+        grid-template-columns: var(--sidebar-width) 1fr !important;
+      }
+
+      .sidebar {
+        padding: 20mm 12px 16mm 14px !important;
+      }
+
+      .main {
+        padding: 14mm 16mm 16mm 16mm !important;
+      }
+    }
+
+    @media screen and (max-width: 900px) {
+      body {
+        padding: 10px;
+      }
+
+      .toolbar,
+      .sheet,
+      .small-note {
+        width: 100%;
+      }
+
+      .sheet {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar,
+      .main {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="toolbar">
+    <div class="toolbar__text">
+      Edita el bloque <strong>cvData</strong> dentro del código para cambiar la información. Luego usa el botón de imprimir para guardarlo como PDF.
+    </div>
+    <div class="toolbar__actions">
+      <button type="button" onclick="window.print()">Imprimir / guardar como PDF</button>
+      <button type="button" class="secondary" onclick="scrollToCodeGuide()">Ir a la guía de edición</button>
+    </div>
+  </div>
+
+  <article class="sheet" id="resume-sheet">
+    <aside class="sidebar">
+      <div class="photo-wrap" id="photo-box">foto</div>
+      <h1 class="name" id="name"></h1>
+      <div class="contact-list" id="contacts"></div>
+
+      <section class="side-section">
+        <h2 class="side-title">Educación</h2>
+        <div class="side-line"></div>
+        <div id="education"></div>
+      </section>
+
+      <section class="side-section">
+        <h2 class="side-title">Habilidades</h2>
+        <div class="side-line"></div>
+        <div id="skills"></div>
+      </section>
+
+      <section class="side-section">
+        <h2 class="side-title">Idiomas</h2>
+        <div class="side-line"></div>
+        <ul class="side-list" id="languages"></ul>
+      </section>
+    </aside>
+
+    <main class="main">
+      <section class="main-section">
+        <h2 class="main-title">Resumen profesional</h2>
+        <p class="summary" id="summary"></p>
+      </section>
+
+      <section class="main-section" id="dynamic-sections"></section>
+    </main>
+  </article>
+
+  <div class="small-note" id="guide">
+    <strong>Guía breve:</strong> para que el PDF conserve el panel gris lateral, en la ventana de impresión del navegador activa <strong>gráficos de fondo</strong>. Si vas a usarlo en GitHub Pages, este archivo ya está con nombre <strong>index.html</strong>.
+  </div>
+
+  <script>
+    /*
+      ==============================================================
+      EDITA SOLO ESTA PARTE
+      ==============================================================
+      1) Cambia textos, fechas, bullets y enlaces.
+      2) Para la foto, usa un nombre simple y déjala en la misma carpeta:
+         photo: "./foto-cv.png?v=2"
+      3) Puedes agregar o quitar items dentro de los arrays.
+    */
+
+    const cvData = {
+      profile: {
+        name: "Eva Luna Calle Briceño",
+        photo: "./foto-cv.png?v=2",
+        contacts: [
+          {
+            type: "email",
+            text: "e.luna.cb07@gmail.com",
+            href: "mailto:e.luna.cb07@gmail.com"
+          },
+          {
+            type: "phone",
+            text: "(+51) 936 306 206"
+          },
+          {
+            type: "location",
+            text: "Piura, Perú"
+          },
+          {
+            type: "link",
+            text: "LinkedIn",
+            href: "https://www.linkedin.com/in/evaluna-calle-brice%C3%B1o-108719305"
+          },
+          {
+            type: "link",
+            text: "GitHub",
+            href: "https://github.com/Luna07-zh"
+          }
+        ]
+      },
+
+      sidebar: {
+        education: [
+          {
+            title: "Bachiller en Economía (en curso)",
+            subtitle: "Universidad Nacional de Piura (UNP)",
+            lines: ["Piura, Perú", "Décimo superior de la carrera"]
+          }
+        ],
+        skills: [
+          {
+            label: "Software",
+            text: "Stata (básico–intermedio), EViews (intermedio), Python (intermedio), Power BI (intermedio), Microsoft 365 (Excel, Word y PowerPoint – avanzado), Meta Ads."
+          },
+          {
+            label: "Competencias",
+            text: "Redacción académica (APA 7), análisis crítico, gestión de proyectos, oratoria y facilitación, innovación y solución de problemas."
+          }
+        ],
+        languages: [
+          "Español (nativo)",
+          "Inglés (avanzado)",
+          "Japonés (básico)"
+        ]
+      },
+
+      summary:
+        "Estudiante de Economía en la UNP, ubicada en el décimo superior de la carrera, con interés en análisis económico, datos y comportamiento humano/económico. He coordinado proyectos académicos y de responsabilidad social universitaria, gestionando voluntarios y actividades orientadas al desarrollo local y al impulso del capital social de estudiantes y comunidades. Manejo herramientas cuantitativas como Stata, EViews, Python, Excel y Power BI a nivel intermedio, y me interesa aplicarlas en análisis de políticas públicas, monitoreo y evaluación (M&E) e inversiones. Busco prácticas preprofesionales como analista económico o de datos en instituciones públicas, ONG o entidades del sistema financiero vinculadas a proyectos con impacto social y alineados a los Objetivos de Desarrollo Sostenible (ODS).",
+
+      sections: [
+        {
+          title: "Experiencia",
+          type: "entries",
+          items: [
+            {
+              role: "Coordinación de proyectos académicos en Círculo de Capital Social y Liderazgo Académico — Facultad de Economía, UNP",
+              date: "Dic 2024 – presente",
+              location: "Piura",
+              bullets: [
+                "Diseñé la propuesta institucional y el portafolio mínimo viable; articulé a docentes, egresados y estudiantes para lanzar un plan anual de actividades.",
+                "Objetivo: formación de capital social interno y externo mediante investigación, mentoría y responsabilidad social.",
+                "Logro: establecimos un esquema de mentoría y talleres de investigación aplicable desde el primer ciclo; el modelo prioriza impacto y sostenibilidad del desarrollo del capital social dentro y fuera de la educación universitaria (piloto en marcha)."
+              ]
+            },
+            {
+              role: "Entrenadora y coordinadora deportiva en Escuela de Karate Shotokan Chulucanas",
+              date: "Dic 2018 – Dic 2019",
+              location: "Chulucanas, Piura",
+              bullets: [
+                "Entrené a niñas, niños y adolescentes en fundamentos técnicos de karate, disciplina y trabajo en equipo, adaptando las sesiones según edad y nivel.",
+                "Coordiné horarios, grupos y comunicación con madres, padres y dirección de la academia, asegurando continuidad en la asistencia y el proceso formativo.",
+                "Gestioné pequeños proyectos deportivos de competidores, incluyendo preparación para torneos, planificación de entrenamientos, seguimiento de desempeño y acompañamiento en competencias.",
+                "Aporté en la organización logística de exhibiciones y eventos internos, promoviendo el desarrollo del capital social y la cultura deportiva en la comunidad."
+              ]
+            },
+            {
+              role: "Liderazgo de proyecto RSU: Limpieza y remozamiento de parque en AAHH Villa del Norte — Dirección de Responsabilidad Social Universitaria, UNP",
+              date: "Dic 2023 – Dic 2023",
+              location: "Castilla, Piura",
+              bullets: [
+                "Co-gestioné la aprobación ante la JUVECO y coordiné voluntariado con una ONG local, garantizando permisos y soporte comunitario.",
+                "Se intervinieron 4 zonas del parque con participación de aproximadamente 37 estudiantes; se retiraron desechos y cenizas con coordinación para el recojo municipal.",
+                "Logramos el involucramiento de niñas y niños del AAHH Villa del Norte y zonas aledañas en la renovación del parque y en actividades de sensibilización ambiental.",
+                "Se restauraron estructuras, se sembraron 23 plantones donados por la DRAP y se implementó un esquema de apadrinaje familiar para su cuidado.",
+                "Se realizó una charla de sensibilización ambiental para niños y niñas con apoyo de la organización “100% voluntarios”."
+              ]
+            },
+            {
+              role: "Analista junior de portafolios en Proyecto propio",
+              date: "Dic 2024 – Dic 2024",
+              location: "Remoto",
+              bullets: [
+                "Construí y comparé carteras multi-activos (ETF, acciones y criptoactivos) evaluando entornos de riesgo por régimen y horizonte temporal con metodología de análisis de riesgo y enfoque científico.",
+                "Logro: selección de cartera diversificada con rendimiento positivo en simulación de largo plazo (paper trading) y criterios de rebalanceo prudenciales."
+              ]
+            },
+            {
+              role: "Gestión de contenidos y marketing digital en Proyecto propio",
+              date: "Dic 2024 – Dic 2024",
+              location: "Remoto",
+              bullets: [
+                "Desarrollé una landing page de alto enfoque en conversión; definí propuestas de valor y objeciones por segmento.",
+                "Lancé campañas en Meta Ads con testeo de ángulos de venta y creatividades; iteré públicos fríos y templados, así como copys basados en insights."
+              ]
+            }
+          ]
+        },
+        {
+          title: "Voluntariado y liderazgo",
+          type: "entries",
+          items: [
+            {
+              role: "Miembro en Cuerpo de Bomberos del Perú",
+              bullets: [
+                "Formación en respuesta a emergencias y trabajo bajo presión."
+              ]
+            }
+          ]
+        },
+        {
+          title: "Certificaciones",
+          type: "entries",
+          items: [
+            {
+              role: "Economía del comportamiento para una gestión pública efectiva — URosarioX (EdX)",
+              date: "Dic 2023 – Dic 2023"
+            },
+            {
+              role: "Curso Superior de Entrenador Personal y Fitness (200 horas) — Instituto IFIC, Valencia, España",
+              date: "Dic 2021",
+              bullets: [
+                "Incluye: Entrenador Personal y Fitness; Dietética y Nutrición Deportiva; Entrenamiento Funcional; Coaching Deportivo e Inteligencia Emocional en el Deporte."
+              ]
+            },
+            {
+              role: "ClimaCafé Piura 2025 — FORASAN, ANA y Universidad Nacional de Piura",
+              date: "Dic 2024 – Dic 2024",
+              bullets: [
+                "Participación en taller internacional ClimateCafé orientado a la comprensión y adaptación al cambio climático mediante la metodología “aprender haciendo”, con capacitaciones, charlas y salidas de campo en ecosistemas de la región Piura."
+              ]
+            },
+            {
+              role: "Cinturón negro federado en karate — Federación Deportiva Peruana de Karate (FPK)",
+              date: "Dic 2018",
+              bullets: [
+                "Grado avanzado en karate, resultado de varios años de práctica continua, participación en competencias y formación técnica y disciplinaria."
+              ]
+            },
+            {
+              role: "Árbitro de karate federado — FPK",
+              date: "Dic 2023",
+              bullets: [
+                "Acreditación oficial como árbitro de karate en competencias federadas, con experiencia en aplicación del reglamento, criterios de puntuación y gestión de combate en eventos deportivos."
+              ]
+            }
+          ]
+        },
+        {
+          title: "Proyectos",
+          type: "entries",
+          items: [
+            {
+              role: "Impulsa tu Futuro — Ferreycorp",
+              bullets: [
+                "Co-diseño y facilitación de charlas orientadas al desarrollo e impulso del capital social estudiantil; estructura replicable para colegios públicos como parte del programa Impulsando Talento con Valores."
+              ]
+            },
+            {
+              role: "Proyecto RSU “Fortalecimiento de capacidades en innovación, formación de capital humano y liderazgo” — Facultad de Economía, UNP",
+              date: "Dic 2024 – Dic 2025",
+              bullets: [
+                "Co-líder estudiantil en el diseño e implementación de un proyecto de Responsabilidad Social Universitaria orientado a fortalecer el capital social y académico de estudiantes de Economía mediante mentorías, círculos de estudio e introducción a herramientas de ciencia de datos (Excel, Power BI, SQL y Python), liderazgo estudiantil y vinculación con colegios y actores regionales."
+              ]
+            }
+          ]
+        }
+      ]
+    };
+
+    const icons = {
+      email: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M3 5h18a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm0 2v.2l9 6 9-6V7l-9 6-9-6Z"/></svg>',
+      phone: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15.9 15.9 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.24c1.1.36 2.28.56 3.5.56a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.82 21 3 13.18 3 3.5a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.22.2 2.4.56 3.5a1 1 0 0 1-.24 1l-2.22 2.8Z"/></svg>',
+      location: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 1 7 7c0 5.25-7 13-7 13S5 14.25 5 9a7 7 0 0 1 7-7Zm0 9.5A2.5 2.5 0 1 0 12 6a2.5 2.5 0 0 0 0 5.5Z"/></svg>',
+      link: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M10.59 13.41a1.996 1.996 0 0 0 2.82 0l3.59-3.59a2 2 0 0 0-2.83-2.82l-1.29 1.29a1 1 0 1 1-1.41-1.41l1.29-1.29a4 4 0 1 1 5.66 5.66l-3.59 3.59a4 4 0 0 1-5.66 0a1 1 0 0 1 1.42-1.42ZM6.99 12.17a4 4 0 0 1 5.66 0a1 1 0 1 1-1.41 1.42a2 2 0 0 0-2.83 0l-3.58 3.58a2 2 0 0 0 2.82 2.83l1.29-1.29a1 1 0 0 1 1.41 1.41l-1.29 1.29a4 4 0 0 1-5.66-5.66l3.59-3.58Z"/></svg>',
+      default: '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><circle cx="12" cy="12" r="8" fill="currentColor"/></svg>'
+    };
+
+    function el(tag, className, html) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (html !== undefined) node.innerHTML = html;
+      return node;
+    }
+
+    function renderPhoto() {
+      const box = document.getElementById('photo-box');
+      if (cvData.profile.photo && cvData.profile.photo.trim() !== '') {
+        const img = document.createElement('img');
+        img.src = cvData.profile.photo;
+        img.alt = `Foto de ${cvData.profile.name}`;
+        box.innerHTML = '';
+        box.appendChild(img);
+      } else {
+        box.textContent = 'foto';
+      }
+    }
+
+    function renderContacts() {
+      const wrap = document.getElementById('contacts');
+      wrap.innerHTML = '';
+
+      cvData.profile.contacts.forEach(contact => {
+        const item = el('div', 'contact-item');
+        const icon = el('span', 'icon', icons[contact.type] || icons.default);
+        const text = document.createElement(contact.href ? 'a' : 'span');
+        text.textContent = contact.text;
+        if (contact.href) {
+          text.href = contact.href;
+          text.target = '_blank';
+          text.rel = 'noreferrer';
+        }
+        item.appendChild(icon);
+        item.appendChild(text);
+        wrap.appendChild(item);
+      });
+    }
+
+    function renderEducation() {
+      const wrap = document.getElementById('education');
+      wrap.innerHTML = '';
+
+      cvData.sidebar.education.forEach(item => {
+        const block = el('div', 'side-block');
+        block.appendChild(el('div', '', `<strong>${item.title}</strong>`));
+        if (item.subtitle) block.appendChild(el('div', '', `<em>${item.subtitle}</em>`));
+        (item.lines || []).forEach(line => block.appendChild(el('div', '', line)));
+        wrap.appendChild(block);
+      });
+    }
+
+    function renderSkills() {
+      const wrap = document.getElementById('skills');
+      wrap.innerHTML = '';
+
+      cvData.sidebar.skills.forEach(item => {
+        const block = el('div', 'side-block');
+        block.innerHTML = `<strong>${item.label}:</strong> ${item.text}`;
+        wrap.appendChild(block);
+      });
+    }
+
+    function renderLanguages() {
+      const wrap = document.getElementById('languages');
+      wrap.innerHTML = '';
+
+      cvData.sidebar.languages.forEach(language => {
+        const li = el('li', '', language);
+        wrap.appendChild(li);
+      });
+    }
+
+    function renderSummary() {
+      document.getElementById('summary').textContent = cvData.summary;
+    }
+
+    function renderEntries(section) {
+      const sectionNode = el('section', 'main-section');
+      sectionNode.appendChild(el('h2', 'main-title', section.title));
+
+      section.items.forEach(item => {
+        const entry = el('article', 'entry');
+        entry.appendChild(el('h3', 'entry-role', item.role));
+
+        if (item.date || item.location) {
+          let meta = '';
+          if (item.date) meta += item.date;
+          if (item.location) meta += `${item.date ? '<span class="divider">|</span>' : ''}${item.location}`;
+          entry.appendChild(el('div', 'entry-meta', meta));
+        }
+
+        if (item.bullets && item.bullets.length) {
+          const ul = el('ul', 'entry-list');
+          item.bullets.forEach(bullet => ul.appendChild(el('li', '', bullet)));
+          entry.appendChild(ul);
+        }
+
+        sectionNode.appendChild(entry);
+      });
+
+      return sectionNode;
+    }
+
+    function renderSections() {
+      const wrap = document.getElementById('dynamic-sections');
+      wrap.innerHTML = '';
+      cvData.sections.forEach(section => {
+        if (section.type === 'entries') {
+          wrap.appendChild(renderEntries(section));
+        }
+      });
+    }
+
+    function scrollToCodeGuide() {
+      document.getElementById('guide').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    function renderAll() {
+      document.getElementById('name').textContent = cvData.profile.name;
+      renderPhoto();
+      renderContacts();
+      renderEducation();
+      renderSkills();
+      renderLanguages();
+      renderSummary();
+      renderSections();
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
